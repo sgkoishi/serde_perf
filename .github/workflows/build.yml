@@ -1,0 +1,19 @@
+on: [push]
+
+name: Build
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        variants: [512, 1024, 2048, 4096, 8192]
+        serialize: ["serialize", "dont"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+    - run: echo ${{ matrix.variants }} > count
+    - run: touch ${{ matrix.serialize }}
+    - run: cargo build
