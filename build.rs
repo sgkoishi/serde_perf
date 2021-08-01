@@ -7,7 +7,7 @@ use std::{
 
 fn main() {
     let mut rng = rand::thread_rng();
-    let r = include_str!("./count").parse::<i32>().unwrap();
+    let r = include_str!("./count").trim().parse::<i32>().unwrap();
     let do_ser = Path::new("./serialize").exists();
     let w = File::create("./src/definitions.rs").unwrap();
     let mut w = BufWriter::new(w);
