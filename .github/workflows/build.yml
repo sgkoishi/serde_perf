@@ -6,8 +6,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        variants: [1024, 2048, 4096, 8192, 16384, 32768]
+        variants: [4096, 8192, 12288, 16384, 20480, 24576, 28672]
         serialize: ["serialize", "dont"]
     steps:
       - uses: actions/checkout@v2
