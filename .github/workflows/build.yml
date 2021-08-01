@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variants: [4096, 8192, 12288, 16384, 20480, 24576, 28672]
+        variants: [8192, 9216, 10240, 11264, 12288, 13312, 14336, 20480]
         serialize: ["serialize", "dont"]
     steps:
       - uses: actions/checkout@v2
