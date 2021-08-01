@@ -1,5 +1,6 @@
 use rand::Rng;
 use std::{
+    collections::HashSet,
     fs::File,
     io::{BufWriter, Write},
     path::Path,
@@ -7,7 +8,7 @@ use std::{
 
 fn main() {
     let mut rng = rand::thread_rng();
-    let r = include_str!("./count").trim().parse::<i32>().unwrap();
+    let r = include_str!("./count").trim().parse::<usize>().unwrap();
     let do_ser = Path::new("./serialize").exists();
     let w = File::create("./src/definitions.rs").unwrap();
     let mut w = BufWriter::new(w);
@@ -26,19 +27,19 @@ fn main() {
             .unwrap();
     }
     w.write("pub enum Ids {\n".as_bytes()).unwrap();
-    for _ in 0..r {
-        w.write(
-            format!(
-                "    {}{}{}_{}_{:0>4},\n",
-                rng.gen_range(65..91) as u8 as char,
-                rng.gen_range(65..91) as u8 as char,
-                rng.gen_range(65..91) as u8 as char,
-                rng.gen_range(65..91) as u8 as char,
-                rng.gen_range(0..10000)
-            )
-            .as_bytes(),
-        )
-        .unwrap();
+    let mut hs = HashSet::new();
+    while hs.len() < r {
+        hs.insert(format!(
+            "    {}{}{}_{}_{:0>4},\n",
+            rng.gen_range(65..91) as u8 as char,
+            rng.gen_range(65..91) as u8 as char,
+            rng.gen_range(65..91) as u8 as char,
+            rng.gen_range(65..91) as u8 as char,
+            rng.gen_range(0..10000)
+        ));
+    }
+    for i in hs {
+        w.write(i.as_bytes()).unwrap();
     }
     w.write("}".as_bytes()).unwrap();
     println!("cargo:rerun-if-changed=build.rs");
